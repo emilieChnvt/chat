@@ -25,6 +25,7 @@ final class ConversationController extends AbstractController
 
         return $this->render('conversation/index.html.twig', [
             'profiles' => $profileRepository->findAll(),
+            'users'
         ]);
     }
 
@@ -36,11 +37,11 @@ final class ConversationController extends AbstractController
         }
         if(!$profile){return $this->redirectToRoute('app_conversations');}
 
-        $conversation = $conversationRepository->findOneBy([$profile , $this->getUser()->getProfile()]);
+        $conversation = $conversationRepository->findOneByCouple($profile, $this->getUser()->getProfile());
 
         if(!$conversation){
             $conversation = new Conversation();
-            $conversation->addParticipant($this->getUser());
+            $conversation->addParticipant($this->getUser()->getProfile());
             $conversation->addParticipant($profile);
             $entityManager->persist($conversation);
             $entityManager->flush();
@@ -49,8 +50,7 @@ final class ConversationController extends AbstractController
         }else{
             $idConv = $conversation->getId();
         }
-        return $this->redirectToRoute('app_conversation_open', [
-            'idConv' => $idConv
+        return $this->redirectToRoute('app_conversation_open', ['id' => $idConv
         ]);
     }
 
@@ -71,6 +71,10 @@ final class ConversationController extends AbstractController
             $entityManager->flush();
 
         }
+        return $this->render('conversation/open.html.twig', [
+            'conversation' => $conversation,
+            'form' => $form->createView(),
+        ]);
 
     }
 }

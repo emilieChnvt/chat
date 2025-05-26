@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('app_conversations') }}"><--back to conversations</a>
+    <h3>Messages : </h3>
+
+    <div id="messages">
+        {% for message in conversation.messages %}
+            <p><strong>{{ message.author.name }} said: </strong>{{ message.content }}</p>
+
+        {% endfor %}
+
+
+    </div>
+    {{ form_start(form) }}
+    {{ form_widget(form.content) }}
+    <button type="submit">post</button>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
