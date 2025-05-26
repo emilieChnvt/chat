@@ -25,7 +25,7 @@
             Chat n° {{ conversation.id }}
             between {% for participant in conversation.participants %}
                 {% if participant == app.user %} <span><strong>you</strong></span>
-                {% else %} <span>{{ participant.email }}</span>{% endif %} and
+                {% else %} <span>{{ participant.name }}</span>{% endif %} and
             {% endfor %}
 
         </a><br>
