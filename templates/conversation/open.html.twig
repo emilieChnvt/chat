@@ -3,23 +3,25 @@
 {% block body %}
     <a href="{{ path('app_conversations') }}"><--back to conversations</a>
     <h3>Messages : </h3>
+    <div id="messages" {{ turbo_stream_listen('conversations/' ~ conversation.id, 'default', { withCredentials: true }) }}>
 
-    <div id="messages">
         {% for message in conversation.messages %}
-            <p><strong>{{ message.author.name }} said: </strong>{{ message.content }}</p>
+
+            <twig:Message :message="message"></twig:Message>
 
         {% endfor %}
 
-
     </div>
-    {{ form_start(form) }}
-    {{ form_widget(form.content) }}
-    <button type="submit">post</button>
-    {{ form_end(form) }}
+    <turbo-frame id="message_form">
+        {{ form_start(form) }}
+        {{ form_widget(form.content) }}
+        <button type="submit">post</button>
+        {{ form_end(form) }}
+
+    </turbo-frame>
 
 {% endblock %}
 
 {% block title %}
 
 {% endblock %}
-
